@@ -8,13 +8,15 @@ class Users extends MainController
 
     public function getUserInfo()
     {
-        $data = \User::query()->select('name', 'photo')->where('login', '=', $_SESSION['login'])->get();
+        $elUserModel = new User();
+        $data = $elUserModel::query()->select('name', 'photo')->where('login', '=', $_SESSION['login'])->get();
         return $data->toArray()[0];
     }
 
     private function getUserAvatar($id)
     {
-        $data = \User::query()->select('photo')->where('id', '=', $id)->get();
+        $elUserModel = new User();
+        $data = $elUserModel::query()->select('photo')->where('id', '=', $id)->get();
         return $data->toArray()[0];
     }
 
@@ -22,13 +24,15 @@ class Users extends MainController
     {
         $routes = explode('/', $_SERVER['REQUEST_URI']);
         $id = $routes[3];
-        $data = \User::first()->where('id', '=', $id)->get();
+        $elUserModel = new User();
+        $data = $elUserModel::first()->where('id', '=', $id)->get();
         return $data->toArray()[0];
     }
 
     private function checkLogin($login)
     {
-        $data = \User::query()->select('login')->where('login', '=', $login)->get();
+        $elUserModel = new User();
+        $data = $elUserModel::query()->select('login')->where('login', '=', $login)->get();
         return $data->toArray()[0];
     }
 
@@ -200,11 +204,12 @@ class Users extends MainController
     {
         $routes = explode('/', $_SERVER['REQUEST_URI']);
         $id = $routes[3];
-        $datas = \User::query()->select('photo')->where('id', '=', $id)->get();
+        $elUserModel = new User();
+        $datas = $elUserModel::query()->select('photo')->where('id', '=', $id)->get();
         $data = $datas->toArray()[0];
         if ($data !== false) {
             if ($this->deleteOnlyPhoto($data['photo']) === 'delete') {
-                $user = \User::find($id);
+                $user = $elUserModel::find($id);
                 $user->photo = '';
                 $user->save();
                 $msg = 'Аватарка удалена';
@@ -232,14 +237,15 @@ class Users extends MainController
     {
         $routes = explode('/', $_SERVER['REQUEST_URI']);
         $id = $routes[3];
-        $datas = \User::query()->select('login', 'photo')->where('id', '=', $id)->get();
+        $elUserModel = new User();
+        $datas = $elUserModel::query()->select('login', 'photo')->where('id', '=', $id)->get();
         $data = $datas->toArray()[0];
         if ($data !== false) {
             if ($this->deleteOnlyPhoto($data['photo']) === 'delete') {
                 //$usersView = self::getPD()->prepare('DELETE FROM users WHERE id=:id');
-                $user = \User::find($id);
-               // $data = $user->toArray()[0];
-              //  var_dump($data);
+                $user = $elUserModel::find($id);
+                // $data = $user->toArray()[0];
+                //  var_dump($data);
                 // echo $_SESSION['login'] . ' - ' .$data['login'];
                 if ($_SESSION['login'] === $data['login']) {
                     //$usersView->execute(['id' => $id]);
@@ -261,19 +267,21 @@ class Users extends MainController
 
     public function allPhoto()
     {
-        $data = \User::query()->select('id', 'photo')->where('photo', '>', '')->get();
+        $elUserModel = new User();
+        $data = $elUserModel::query()->select('id', 'photo')->where('photo', '>', '')->get();
         return $data->toArray();
     }
 
     public function allUser()
     {
-        $data = \User::query()->select('login', 'name', 'age', 'description', 'photo', 'id')->get();
+        $elUserModel = new User();
+        $data = $elUserModel::query()->select('login', 'name', 'age', 'description', 'photo', 'id')->get();
         return $data->toArray();
     }
 
     private function addUserDB($data)
     {
-        $user = new \User();
+        $user = new User();
         $user->login = $data['login'];
         $user->password = $data['password'];
         $user->name = $data['name'];
@@ -285,10 +293,11 @@ class Users extends MainController
 
     private function updateUser($data, $id)
     {
+        $elUserModel = new User();
         if (array_key_exists('img_url', $data)) {
             if (array_key_exists('password', $data)) {
                 //echo "Массив содержит 'password' & 'img_url' .";
-                $user = \User::find($id);
+                $user = $elUserModel::find($id);
                 $user->login = $data['login'];
                 $user->password = $data['password'];
                 $user->name = $data['name'];
@@ -298,7 +307,7 @@ class Users extends MainController
                 $user->save();
             } else {
                 //echo "Массив не содержит 'password' но содержит 'img_url' .";
-                $user = \User::find($id);
+                $user = $elUserModel::find($id);
                 $user->login = $data['login'];
                 $user->name = $data['name'];
                 $user->age = $data['age'];
@@ -309,7 +318,7 @@ class Users extends MainController
         } else {
             if (array_key_exists('password', $data)) {
                 //echo "Массив содержит 'password' и не содержит 'img_url' .";
-                $user = \User::find($id);
+                $user = $elUserModel::find($id);
                 $user->login = $data['login'];
                 $user->password = $data['password'];
                 $user->name = $data['name'];
@@ -318,7 +327,7 @@ class Users extends MainController
                 $user->save();
             } else {
                 //echo "Массив не содержит 'password' и не содержит 'img_url' .";
-                $user = \User::find($id);
+                $user = $elUserModel::find($id);
                 $user->login = $data['login'];
                 $user->name = $data['name'];
                 $user->age = $data['age'];
@@ -331,7 +340,8 @@ class Users extends MainController
 
     private function autentificationUser($password, $login)
     {
-        $data = \User::query()->select('login')->where('login', '=', $login)->where('password', '=', $password)->get();
+        $elUserModel = new User();
+        $data = $elUserModel::query()->select('login')->where('login', '=', $login)->where('password', '=', $password)->get();
         return $data->toArray()[0];
     }
 

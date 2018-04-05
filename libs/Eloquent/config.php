@@ -20,24 +20,3 @@ $capsule->setAsGlobal();
 
 // Setup the Eloquent ORM... (optional; unless you've used setEventDispatcher())
 $capsule->bootEloquent();
-
-class User extends Illuminate\Database\Eloquent\Model
-{
-    protected $guarded = ['id'];
-    public $timestamps = false;
-    public $table = "users";
-}
-
-class Book extends Illuminate\Database\Eloquent\Model
-{
-    protected $guarded = ['id'];
-    public $timestamps = false;
-    public $table = "books";
-}
-
-class Category extends Illuminate\Database\Eloquent\Model
-{
-    protected $guarded = ['id'];
-    public $timestamps = false;
-    public $table = "categoy";
-}
