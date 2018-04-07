@@ -8,5 +8,5 @@ class Category extends Model
 {
     protected $guarded = ['id'];
     public $timestamps = false;
-    public $table = "categoy";
+    public $table = "category";
 }
